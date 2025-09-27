@@ -85,10 +85,20 @@ const galleryMarkup = images.map(createGallery).join("");
 
 container.insertAdjacentHTML("beforeend", galleryMarkup);
 
-function handlerClick(event) {
-  if (event.target === event.currentTagret) return;
+const handlerClick = (event) => {
+  if (event.target.nodeName !== "IMG") return;
 
-  const images = event.target.closest(".gallery-image");
-  if (!images) return;
-}
-event.preventDefault();
+  event.preventDefault();
+
+  const src = event.target.dataset.source;
+
+  const desc = event.target.alt || "";
+
+  const modal = basicLightbox.create(`
+
+  <img src="${src}" alt="${desc}"/>`);
+
+  modal.show();
+};
+
+container.addEventListener("click", handlerClick);
